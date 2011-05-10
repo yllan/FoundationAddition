@@ -26,6 +26,7 @@
             value = [[component componentsSeparatedByString: @"="] objectAtIndex: 1];
         [parameters setObject: value forKey: key];
     }
+    return parameters;
 }
 
 @end

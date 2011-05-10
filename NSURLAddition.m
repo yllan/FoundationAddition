@@ -6,13 +6,34 @@
 {
     return [[self query] dictionaryFromURLQuery];
 }
+
+- (NSURL *) URLByAddingQueryComponents: (NSDictionary *)queries
+{
+    if (queries == nil || [[queries allKeys] count] == 0) return self;
+    
+    NSMutableDictionary *newQueries = [NSMutableDictionary dictionaryWithDictionary: [self queryComponents]];
+    
+    for (NSString *key in queries) {
+        [newQueries setObject: [queries objectForKey: key] forKey: key];
+    }
+    
+    NSMutableString *newURLString = [NSMutableString stringWithString: [[self baseURL] absoluteString]];
+    if ([[self parameterString] length] > 0) {
+        [newURLString appendFormat: @";%@", [self parameterString]];
+    }
+    [newURLString appendFormat: @"?%@", [newQueries stringFromQueryComponents]];
+    if ([[self fragment] length] > 0) {
+        [newURLString appendFormat: @"#%@", [self fragment]];
+    }
+    return [NSURL URLWithString: newURLString];
+}
 @end
 
 @implementation NSDictionary (YLAddition)
 - (NSString *) stringFromQueryComponents
 {
     NSMutableArray *components = [NSMutableArray array];
-    for (NSString *id in [self allKeys]) {
+    for (NSString *key in [self allKeys]) {
         id value = [self objectForKey: key];
         NSString *result = [[key description] stringByEncodingURLFormat];
         

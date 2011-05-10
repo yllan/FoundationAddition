@@ -2,6 +2,7 @@
 
 @interface NSURL (YLAddition)
 - (NSDictionary *) queryComponents;
+- (NSURL *) URLByAddingQueryComponents: (NSDictionary *)queries;
 @end
 
 @interface NSDictionary (YLAddition)
