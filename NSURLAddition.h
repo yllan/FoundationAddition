@@ -3,3 +3,7 @@
 @interface NSURL (YLAddition)
 - (NSDictionary *) queryComponents;
 @end
+
+@interface NSDictionary (YLAddition)
+- (NSString *) stringFromQueryComponents;
+@end
