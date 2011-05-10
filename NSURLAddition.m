@@ -17,10 +17,19 @@
         [newQueries setObject: [queries objectForKey: key] forKey: key];
     }
     
-    NSMutableString *newURLString = [NSMutableString stringWithString: [[self baseURL] absoluteString]];
-    if ([[self parameterString] length] > 0) {
-        [newURLString appendFormat: @";%@", [self parameterString]];
+    NSMutableString *newURLString = [NSMutableString string];
+    if ([[self scheme] length] > 0) [newURLString appendFormat: @"%@://", [self scheme]];
+    if ([[self user] length] > 0) {
+        [newURLString appendFormat: @"%@", [self user]];
+        if ([[self password] length] > 0) 
+            [newURLString appendFormat: @":%@", [self password]];
+        [newURLString appendFormat: @"@"];
     }
+    if ([[self host] length] > 0) [newURLString appendFormat: @"%@", [self host]];
+    if ([self port] != nil) [newURLString appendFormat: @":%@", [self port]];
+    if ([[self path] length] > 0) [newURLString appendFormat: @"%@", [self path]];
+    if ([[self parameterString] length] > 0) [newURLString appendFormat: @";%@", [self parameterString]];
+
     [newURLString appendFormat: @"?%@", [newQueries stringFromQueryComponents]];
     if ([[self fragment] length] > 0) {
         [newURLString appendFormat: @"#%@", [self fragment]];
