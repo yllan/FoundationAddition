@@ -22,6 +22,53 @@
 //
 
 #import "NSData+Base64.h"
+#import <stdio.h>
+#import <stdlib.h>
+#import <string.h>
+
+
+static unsigned char strToChar (char a, char b)
+{
+    char encoder[3] = {'\0','\0','\0'};
+    encoder[0] = a;
+    encoder[1] = b;
+    return (char) strtol(encoder,NULL,16);
+}
+static const char *const digits = "0123456789abcdef";
+
+@implementation NSData (Hex)
++ (NSData *) dataFromHexidecimal: (NSString *)hexString
+{
+    const char * bytes = [hexString UTF8String];
+    NSUInteger length = strlen(bytes);
+    unsigned char * r = (unsigned char *) malloc(length / 2 + 1);
+    unsigned char * index = r;
+    
+    while ((*bytes) && (*(bytes +1))) {
+        *index = strToChar(*bytes, *(bytes +1));
+        index++;
+        bytes+=2;
+    }
+    *index = '\0';
+    
+    NSData * result = [NSData dataWithBytes: r length: length / 2];
+    free(r);
+    
+    return result;
+}
+
+- (NSString *) hexString
+{
+    NSMutableString *result = [NSMutableString string];
+    NSUInteger length = [self length];
+    int8_t *bytes = (int8_t *)[self bytes];
+
+    for (NSUInteger idx = 0; idx < length; idx++) {
+        [result appendFormat: @"%02x", bytes[idx]];
+    }    
+    return result;
+}
+@end
 
 //
 // Mapping from 6 bit pattern to ASCII character.

@@ -40,3 +40,8 @@ char *NewBase64Encode(
 - (NSString *)base64EncodedString;
 
 @end
+
+@interface NSData (Hex)
++ (NSData *) dataFromHexidecimal: (NSString *)hexString;
+- (NSString *) hexString;
+@end
