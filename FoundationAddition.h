@@ -3,4 +3,5 @@
     #import "NSStringAddition.h"
     #import "NSURLAddition.h"
     #import "NSData+Base64.h"
+    #import "NSDate+HumanComparison.h"
 #endif
